@@ -1,0 +1,6 @@
+neighborhood < 2 or negighborhood > 3
+death
+neighborhood = 3 
+revive
+neighborhood = 2 for the current live patch
+keep live
