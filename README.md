@@ -1,5 +1,6 @@
 # Netlogolearning
 
+[TOC]
 ## 生命游戏认识Patch
 - 元胞自动机
 
