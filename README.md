@@ -15,7 +15,7 @@
 ### 与python编程语言的的区别
 - 函数调用 使用空格 func var1 var2
 i.e., set living count neighbors with [pcolor = black]
-'''
+```
 set living = (count (neighbors with [pcolor = black]))
 count统计括号内的函数的个数
 tt=0;
@@ -25,18 +25,18 @@ for each patch in neighbors{
     }
 }
 living = tt
-'''
+```
 - count函数使用
 - 赋值语句 set 
 - 对象集合 patches turtles
 - 大于小于等符号 要加空格
 - ifelse基本语法
 
-'''
+```
 ifelse condition [
     *expression1*
 ][
     *expression2*
 ]
-'''
+```
 - 生命游戏需要在界面中显示更多的patches，edit即可
