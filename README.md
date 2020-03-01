@@ -74,3 +74,52 @@ ifelse condition [
 - go 语句中添加语句 ticks
 - 修改 连续更新 为 **按时间进行更新**
 - 10000步==吸引子，总是在10000步左右修建出高速公路
+
+
+## 羊-草生态系统:Turtle与Plot画图
+- 典型的捕食者与被捕食者的系统
+
+### 羊-草生态系统规则描述
+#### 一个由羊（Turtle）和草（Patch）两种物种构成的小型生态系统
+- 羊的内部有一个能量值水平 
+- 吃掉草可以增加能量值 set energy energy + 10
+- 每一个周期都在消耗能量 turtle_move
+- 能量值小于等于0，就会死掉 turtle_die
+#### 羊能够繁殖 turtle_breed
+- 当能量聚积到一定水平之后，就会繁殖 if energy > 500
+- 繁殖需要消耗能量 
+- 新出生的羊会天然具备一定的能量
+#### 草是可以自发地从地里长出来的 add_food
+
+### 使用函数调用子函数形式来实现 move breed die
+```
+addfood
+ask turtles [
+    turtle_move
+    turtle_breed
+    turtle_die
+]
+```
+
+#### 关于方法和属性的上下文==一个属性变量的主体（上下文）
+- turtle_move  turtle_breed turtle_die 是在ask turtles 函数内部的
+- 自动调用turtles所在的patch的属性
+- 每一个turtle必对应一个patch
+- 如果在ask turtles 外部使用子函数，则会报错
+
+### 如何追踪某一个具体的Turtle和Patch
+- 右键选择可有inspect， 含多项具体参数
+- watch，光环buff加持
+- follow，按所followed对象移动视图，使其为中心
+
+### Plot 绘图
+- 添加按钮 下拉选择
+- 绘图笔名称使用English，作为函数需要调用，中文易出错
+- tick 使用才能覆盖仿真系统原有的时间钟
+- reset-ticks in setup; tick in go
+- 自动调整图形尺度
+- 显示图例
+
+
+
+
