@@ -120,6 +120,65 @@ ask turtles [
 - 自动调整图形尺度
 - 显示图例
 
+## 经济系统by turtles互动
+### 问题描述： 财富分布的不平等性
+- 意大利经济学家Pareto早在19世纪就发现，财富或收入的分布满足帕累托分布
+- 通俗说，存在着“二-八”准则
 
+### 一个最简人工经济模型
+- 2000年，物理学家Victor M. Yakovenko提出了一个最简单的人工经济模型：货币转移模型，通过eplison随机数进行转移实现
+- 一个经济系统中人和财富总量保持不变 = 从观察者角度输入命令可查看 sum [money] of turtles; count turtles 判断系统逻辑是否正确
+- 开始的时候，每个人都有等量的货币 set money (total_money / num_agents)
+- 每当两个Agent相遇，它们俩就随机分布财富 deltam 进行再分布财富
 
+### 
+- 如何使用滑块控件
+ - num_agents 
+ - total_money
+- Let和Set两种赋值语句的区别
+ - set 只能给已定义的变量进行赋值
+ - let 初始化未定义的变量 + 赋值，同时操作 i.e., agsets
+- one-of, n-of的使用
+ - 从集合agentset中随机选择一个元素
+ - 从集合agentset中随机选择n个元素
+- 如何访问另一个Agent的内部状态 ask trader
+``` ask turtles[
+    let agsets other turtles
+    if count agsets >= 1
+    [
+      transaction (one-of agsets)
+    ]
+    forward 1
+  ]
 
+to transaction [trader]
+  let deltam 0
+  let money1 ([money] of trader)
+  let epsilon (random-float 1)
+  set deltam (epsilon - 1) * money + epsilon * money1
+  if money + deltam >= 0 and money1 - deltam >= 0
+  [
+    set money money + deltam
+    ask trader[
+      set money money1 - deltam
+    ]
+    
+  ]
+end
+([money] of trader)为agent2的作用域，其余为agent1的作用域
+set money money1 - deltam 为agent2的作用域，其余为agent1的作用域
+```
+- 绘直方图的方法
+ - 更改绘笔属性为条形
+ - 绘图更新命令 update-plot
+ - reset-ticks in to setup, tick in go, 按时间步进行更新
+ - 自定义绘图更新函数，增加lst列表，得到turtles的money属性值，非空，设定x [0, max lst]值
+``` 
+let lst [money] of turtles
+set-histogram-num-bars 100
+if not empty? lst [
+  set-plot-x-range 0 max lst
+  histogram lst
+]
+```
+## 待解决question：为什么let agsets other turtles-here和 let agsets other turtles导致直方图y轴的差异
