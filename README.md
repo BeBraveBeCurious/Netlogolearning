@@ -182,3 +182,103 @@ if not empty? lst [
 ]
 ```
 ## 待解决question：为什么let agsets other turtles-here和 let agsets other turtles导致直方图y轴的差异
+
+## Lorenz curve: 经济模型 + 曲线绘制
+### 解决遗留问题
+- 该曲线是否为帕累托分布（幂律分布）？
+- 该曲线反应的财富分布是否服从二八准则？
+
+### 如何导出数据文件，利用其他软件配合进行数据分析
+- 添加save-file 按钮
+- 在nlogo代码中同路径下新建agents.txt文件
+```
+to save-file
+  file-open "agents.txt"
+  let wealths ""
+  ask turtles[
+    set wealths (word wealths money "\r\n") ; word为netlogo中操作字符
+  ]
+  file-print wealths
+  file-close
+end
+```
+- matlab进行数据拟合测试
+```
+fid = fopen('D:/Documents/Local-Onedrive/paper/c9-为了理解而教和学/Netlogo多主体建模/agents.txt') 
+line = fgetl(fid);
+wealths = [];
+while line
+    line = str2num(fgetl(fid));
+    wealths = [wealths, line];
+end
+fclose(fid);
+dfittool(wealths);
+%y轴取对数分布，验证财富的指数分布特性，非幂律分布特性
+semilogy(histc(wealths,linspace(min(wealths),max(wealths),50)),'o')
+
+%loglog(hist(wealths, linspace(min(wealths),max(wealths),100)),'o')
+
+xlabel('Wealth');
+ylabel('Probability');
+```
+
+
+### 掌握洛伦兹曲线的概念
+- Lorenz curve
+- agents 财富值增序排列 let sorted-wealths sort [money] of turtles； let total-wealth sum sorted-wealths； 求和财富总量
+- 当前位置的财富值为cumulative value 
+``` 
+  let wealth-sum-so-far 0 
+  let index 0
+  
+  repeat num_agents[
+    set wealth-sum-so-far (wealth-sum-so-far + item index sorted-wealths)
+    plot (wealth-sum-so-far / total-wealth);当前第i个agent的归一化的财富总量
+    set index (index + 1)
+  ]
+```
+ - x轴坐标为0-1，当前个数除总个数 set-plot-pen-interval 1 / num_agents
+ - equal 曲线，所有人财富平均分配
+ - dominant 曲线，社会的所有财富只分配给一个人
+ - lorenz 曲线，升序排列求累计比例
+ - 二八准则如何体现？横坐标为0.8时（80%的人），纵坐标表示目前为止的累积财富占比是否为0.2，20%？
+###  绘制复杂曲线：洛伦兹曲线的若干编程技术
+#### Netlogo中图形元素的组织: plot绘图 pen画笔
+```Set-current-plot “名称”
+Set-plot-current-pen “名称”
+Plot-pen-down
+Plot-pen-up
+```
+#### Plot：等水平间隔地绘制点（线）
+- Plot 0
+- Plot 1
+- Plot 3
+- set-plot-pen-interval ; set-plot-pen-interval 1/ num_agents
+- 等间隔，所以0 1 3为响应间隔点的y坐标
+
+#### Plotxy：任意绘制点（线）
+``` plot-pen-down
+plotxy 0 0
+plotxy 1 1
+plotxy 3 3
+plot-pen-up
+```
+- 在上述代码后面再加 plotxy 44，那么33-44间无连线，与python中turtles画笔down和up类似
+
+#### item的用法
+- item：从列表中根据下标取出任意一个元素出来
+```
+item idx lst
+- idx: 一个整数，即第几个下标
+- lst：一个由多个元素构成的列表
+- Netlogo中的下标是从0开始的，似乎除了matlab从1开始，其余都是从0开始
+```
+- set wealth-sum-so-far (wealth-sum-so-far + item index sorted-wealths)
+- 求解图形第i个agent所对应的纵坐标，累积财富值
+
+
+
+
+
+
+
