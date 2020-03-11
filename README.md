@@ -278,7 +278,28 @@ item idx lst
 
 
 
+## 玩具经济模型学习使用行为空间做实验
 
+### 交易规则的改变——引入personal的储蓄率
+- 实现财富的幂律分布
+```
+turtles-own[
+  money
+  save_rate
+]
+```
+- 引入turtles的属性 save_rate
+- go_new & transaction_new
+
+### GINI系数的计算
+- Lorenz曲线与y=x直线的面积 / 三角形面积1/2 = Lorenz曲线与y=x直线的面积 * 2
+- 数值积分由num_agents个长方形进行分割计算
+
+### 使用行为空间做重复性实验
+- 工具-行为空间-数组输入组合-10次per组实验
+- 输出为spreadsheet excel 表格
+- compute gini
+- to-report gini end 函数
 
 
 
