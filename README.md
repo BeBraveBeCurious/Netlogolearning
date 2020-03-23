@@ -370,3 +370,59 @@ for n=0:2
     d(n) = f(a[n],b[n],c[n])
 end for
 ```
+
+
+
+
+## - 网络上病毒传播的SIR模型 用Links建模网络动力学
+
+### 网络上的SIR模型
+- Susceptible 易感态、健康人群 state = 0
+- Infection 感染态 state =1
+- Recovery 
+- 三种状态彼此之间可以以一定的概率彼此之间相互转换
+- 感染态可以沿着网络进行传播
+
+
+### 如何用Netlogo建模网络
+- R^2构建几何网络节点的随机分布
+
+
+### In-radius等语法
+- agentset in-radius number
+- 返回在agentset中所有元素与当前的agent距离在number范围以内的所有agentset集合（包括当前agent自己）
+```
+ask turtles [ 
+     ask patches in-radius 3 [ 
+            set pcolor red 
+     ]
+ ]
+ ;; each turtle makes a red "splotch" around itself
+```
+
+### Self与Myself的区别
+
+- Self：指代当前语境中的对象
+```
+ask turtles[
+  print self
+]
+```
+- 语境问题：
+- Ask turtles[  …]，语境为当前的Turtle
+- Myself：[]的上一层的对象
+
+
+
+
+Self与myself的区别
+如何简单地实现偏好依附规则
+```
+ask turtles[
+  let potential other turtles in-radius link-radius with [not link-neighbor? myself]
+  create-links-with potential
+]
+指代前面ask的对象
+```
+
+
